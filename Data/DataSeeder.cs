@@ -1,6 +1,6 @@
 public static class DataSeeder
 {
-    public static void SeedData(MyDbContext context)
+    public static void SeedData(ApplicationDbContext context)
     {
         // Check if the database is empty
         if (!context.Authors.Any() && !context.Books.Any())

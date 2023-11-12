@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 
-public class MyDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
-    public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) {}
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
     public DbSet<Author> Authors { get; set; }
     public DbSet<Book> Books { get; set; }

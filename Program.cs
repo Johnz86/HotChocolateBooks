@@ -6,18 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Add GraphQL Services
-builder.Services.AddPooledDbContextFactory<MyDbContext>(options => 
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseInMemoryDatabase("MyDb"));
+    
 builder.Services
     .AddGraphQLServer()
+    .RegisterDbContext<ApplicationDbContext>()
     .AddQueryType<Query>()
     .AddProjections()
     .AddSorting()
-    .AddFiltering();
-
-// Swagger/OpenAPI setup
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    .AddFiltering()
+    .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true);
 
 var app = builder.Build();
 
@@ -34,9 +33,9 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<MyDbContext>>();
-    using var dbContext = dbContextFactory.CreateDbContext();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     DataSeeder.SeedData(dbContext);
 }
+
 
 app.Run();

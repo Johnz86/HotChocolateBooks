@@ -1,23 +1,17 @@
-using HotChocolate;
-using HotChocolate.Data;
-using System.Linq;
-
 public class Query
 {
-    [UseDbContext(typeof(MyDbContext))]
     [UseProjection]
     [UseSorting]
     [UseFiltering]
-    public IQueryable<Author> GetAuthors([Service(ServiceKind.Pooled)] MyDbContext context)
+    public IQueryable<Author> GetAuthors(ApplicationDbContext context)
     {
         return context.Authors;
     }
 
-    [UseDbContext(typeof(MyDbContext))]
     [UseProjection]
     [UseSorting]
     [UseFiltering]
-    public IQueryable<Book> GetBooks([Service(ServiceKind.Pooled)] MyDbContext context)
+    public IQueryable<Book> GetBooks( ApplicationDbContext context)
     {
         return context.Books;
     }
